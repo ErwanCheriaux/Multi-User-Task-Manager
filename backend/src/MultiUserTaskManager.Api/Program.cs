@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
+using MultiUserTaskManager.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +10,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var sqlServersettings = builder.Configuration.GetSection(nameof(SqlServerSettings)).Get<SqlServerSettings>();
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(sqlServersettings?.ConnectionString);
 });
 
 var app = builder.Build();
