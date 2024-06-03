@@ -48,6 +48,7 @@ public class DutyController : ControllerBase
         if (dbDuty == null)
             return NotFound("Duty not found.");
 
+        dbDuty.User = updatedDuty.User;
         dbDuty.Label = updatedDuty.Label;
         dbDuty.Category = updatedDuty.Category;
         dbDuty.EndDate = updatedDuty.EndDate;
