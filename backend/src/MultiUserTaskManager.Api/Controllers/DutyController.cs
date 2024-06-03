@@ -17,32 +17,32 @@ public class DutyController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Duty>>> GetAllDuties()
+    public async Task<ActionResult<List<DutyDto>>> GetAllDuties()
     {
         var duties = await _dataContext.Duties.ToListAsync();
-        return Ok(duties);
+        return Ok(duties.Select(duty => duty.AsDto()));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<Duty>>> GetDuty(int id)
+    public async Task<ActionResult<List<DutyDto>>> GetDuty(int id)
     {
         var duty = await _dataContext.Duties.FindAsync(id);
         if (duty == null)
             return NotFound("Duty not found.");
 
-        return Ok(duty);
+        return Ok(duty.AsDto());
     }
 
     [HttpPost]
-    public async Task<ActionResult<Duty>> CreateDuty(Duty duty)
+    public async Task<ActionResult<DutyDto>> CreateDuty(Duty duty)
     {
         _dataContext.Duties.Add(duty);
         await _dataContext.SaveChangesAsync();
-        return Ok(duty);
+        return Ok(duty.AsDto());
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Duty>> UpdateDuty(int id, Duty updatedDuty)
+    public async Task<ActionResult<DutyDto>> UpdateDuty(int id, Duty updatedDuty)
     {
         var dbDuty = await _dataContext.Duties.FindAsync(id);
         if (dbDuty == null)
@@ -55,7 +55,7 @@ public class DutyController : ControllerBase
         dbDuty.IsCompleted = updatedDuty.IsCompleted;
 
         await _dataContext.SaveChangesAsync();
-        return Ok(dbDuty);
+        return Ok(dbDuty.AsDto());
     }
 
     [HttpDelete]

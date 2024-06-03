@@ -17,20 +17,20 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<User>>> GetAllUsers()
+    public async Task<ActionResult<List<UserDto>>> GetAllUsers()
     {
         var users = await _dataContext.Users.ToListAsync();
-        return Ok(users);
+        return Ok(users.Select(user => user.AsDto()));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<User>>> GetUser(string id)
+    public async Task<ActionResult<List<UserDto>>> GetUser(string id)
     {
         var user = await _dataContext.Users.FindAsync(id);
         if (user == null)
             return NotFound("User not found.");
 
-        return Ok(user);
+        return Ok(user.AsDto());
     }
 
     [HttpPost]
@@ -38,11 +38,11 @@ public class UserController : ControllerBase
     {
         _dataContext.Users.Add(user);
         await _dataContext.SaveChangesAsync();
-        return Ok(user);
+        return Ok(user.AsDto());
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<User>> UpdateUser(string id, User updatedUser)
+    public async Task<ActionResult<UserDto>> UpdateUser(string id, User updatedUser)
     {
         var dbUser = await _dataContext.Users.FindAsync(id);
         if (dbUser == null)
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
         dbUser.LastName = updatedUser.LastName;
 
         await _dataContext.SaveChangesAsync();
-        return Ok(dbUser);
+        return Ok(dbUser.AsDto());
     }
 
     [HttpDelete]
