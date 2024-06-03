@@ -5,8 +5,8 @@ namespace MultiUserTaskManager.Api;
 public record UserDto(
     [Required] string Id,
     [Required] string? Email,
-    [Required] string LastName,
-    [Required] string FirstName
+    [Required] string? LastName,
+    [Required] string? FirstName
 );
 
 public record DutyDto(
