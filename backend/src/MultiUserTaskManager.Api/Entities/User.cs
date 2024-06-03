@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace MultiUserTaskManager.Api.Entities;
 
-public class User
+public class User : IdentityUser
 {
-    public int Id { get; set; }
-    public required string Email { get; set; }
     public required string LastName { get; set; }
     public required string FirstName { get; set; }
 }

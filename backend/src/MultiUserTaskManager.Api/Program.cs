@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
 using MultiUserTaskManager.Api.Settings;
@@ -13,10 +14,13 @@ builder.Services.AddSwaggerGen();
 var sqlServersettings = builder
     .Configuration.GetSection(nameof(SqlServerSettings))
     .Get<SqlServerSettings>();
-    
+
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(sqlServersettings?.ConnectionString)
 );
+
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<DataContext>();
 
 var app = builder.Build();
 
@@ -27,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

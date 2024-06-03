@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<User>>> GetUser(int id)
+    public async Task<ActionResult<List<User>>> GetUser(string id)
     {
         var user = await _dataContext.Users.FindAsync(id);
         if (user == null)
@@ -42,7 +42,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<User>> UpdateUser(int id, User updatedUser)
+    public async Task<ActionResult<User>> UpdateUser(string id, User updatedUser)
     {
         var dbUser = await _dataContext.Users.FindAsync(id);
         if (dbUser == null)
@@ -50,14 +50,13 @@ public class UserController : ControllerBase
 
         dbUser.FirstName = updatedUser.FirstName;
         dbUser.LastName = updatedUser.LastName;
-        dbUser.Email = updatedUser.Email;
 
         await _dataContext.SaveChangesAsync();
         return Ok(dbUser);
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteUser(int id)
+    public async Task<ActionResult> DeleteUser(string id)
     {
         var user = await _dataContext.Users.FindAsync(id);
         if (user == null)

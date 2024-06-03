@@ -1,13 +1,13 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Entities;
 
 namespace MultiUserTaskManager.Api.Data;
 
-public class DataContext : DbContext
+public class DataContext : IdentityDbContext<User>
 {
     public DataContext(DbContextOptions<DataContext> options)
         : base(options) { }
 
-    public DbSet<User> Users { get; set; }
     public DbSet<Duty> Duties { get; set; }
 }
