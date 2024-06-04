@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
 using MultiUserTaskManager.Api.Entities;
@@ -7,6 +7,15 @@ using MultiUserTaskManager.Api.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowOrigin",
+            builder => builder.WithOrigins("http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -33,6 +42,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapIdentityApi<User>();
+
+// return user information based on cookie
+app.MapGet("/status", (ClaimsPrincipal user) => {
+    var email = user.FindFirstValue(ClaimTypes.Email);
+    var firstName = user.FindFirstValue(ClaimTypes.GivenName);
+    var lastName = user.FindFirstValue(ClaimTypes.Surname);
+    return Results.Json(new { email, firstName, lastName });
+}).RequireAuthorization();
+
+app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
