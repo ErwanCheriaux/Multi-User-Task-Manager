@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
@@ -18,10 +20,16 @@ public class DutyController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<List<DutyDto>>> GetAllDuties()
     {
-        var duties = await _dataContext.Duties.ToListAsync();
-        return Ok(duties.Select(duty => duty.AsDto()));
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var duties = await _dataContext.Duties
+            .Where(duty => duty.User != null && duty.User.Email == email)
+            .Select(duty => duty.AsDto())
+            .ToListAsync();
+
+        return Ok(duties);
     }
 
     [HttpGet("{id}")]
