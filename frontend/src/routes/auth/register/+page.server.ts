@@ -10,14 +10,12 @@ export const actions = {
 		const password = data.get('password');
 
 		try {
-			// register the new user
-			const endpoint = import.meta.env.VITE_API_BASE_URL + '/register';
+			const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/Auth/register';
 			const response = await fetch(endpoint, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ email, password })
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({ email, password, firstname, lastname }),
+                credentials: 'include'
 			});
 
 			if (!response.ok) {
