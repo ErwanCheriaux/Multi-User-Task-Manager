@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
@@ -34,8 +35,23 @@ public class DutyController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<DutyDto>> CreateDuty(Duty duty)
+    public async Task<ActionResult<DutyDto>> CreateDuty(DutyModel model)
     {
+        // Find the existing user based on user id
+        var user = await _dataContext.Users.FindAsync(model.UserId);
+        if (user == null)
+            return NotFound("User not found");
+
+        // Create a new Duty entity with the existing user
+        var duty = new Duty
+        {
+            Label = model.Label,
+            Category = model.Category,
+            EndDate = model.EndDate,
+            IsCompleted = model.IsCompleted,
+            User = user
+        };
+
         _dataContext.Duties.Add(duty);
         await _dataContext.SaveChangesAsync();
         return Ok(duty.AsDto());
@@ -70,3 +86,11 @@ public class DutyController : ControllerBase
         return NoContent();
     }
 }
+
+public record DutyModel(
+    [Required] string UserId,
+    [Required] string Label,
+    [Required] string Category,
+    [Required] DateTime EndDate,
+    [Required] bool IsCompleted
+);

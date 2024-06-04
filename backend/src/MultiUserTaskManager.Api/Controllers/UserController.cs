@@ -33,14 +33,6 @@ public class UserController : ControllerBase
         return Ok(user.AsDto());
     }
 
-    [HttpPost]
-    public async Task<ActionResult<User>> CreateUser(User user)
-    {
-        _dataContext.Users.Add(user);
-        await _dataContext.SaveChangesAsync();
-        return Ok(user.AsDto());
-    }
-
     [HttpPut("{id}")]
     public async Task<ActionResult<UserDto>> UpdateUser(string id, User updatedUser)
     {

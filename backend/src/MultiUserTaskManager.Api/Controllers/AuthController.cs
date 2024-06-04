@@ -44,19 +44,9 @@ public class AuthController : ControllerBase
     }
 }
 
-public class RegisterModel
-{
-    [Required]
-    [EmailAddress]
-    public required string Email { get; set; }
-
-    [Required]
-    [DataType(DataType.Password)]
-    public required string Password { get; set; }
-
-    [Required]
-    public required string FirstName { get; set; }
-
-    [Required]
-    public required string LastName { get; set; }
-}
+public record RegisterModel(
+    [Required] [EmailAddress] string Email,
+    [Required] [DataType(DataType.Password)] string Password,
+    [Required] string FirstName,
+    [Required] string LastName
+);
