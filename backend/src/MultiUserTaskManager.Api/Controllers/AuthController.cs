@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MultiUserTaskManager.Api.Entities;
@@ -41,6 +42,23 @@ public class AuthController : ControllerBase
 
         // If the registration failed, return the errors
         return BadRequest(result.Errors);
+    }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout(SignInManager<User> signInManager)
+    {
+        await signInManager.SignOutAsync();
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet("status")]
+    public ActionResult Status() {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var firstname = User.FindFirstValue(ClaimTypes.GivenName);
+        var lastname = User.FindFirstValue(ClaimTypes.Surname);
+        return Ok(new {email, firstname, lastname});
     }
 }
 

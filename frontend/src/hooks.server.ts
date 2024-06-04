@@ -1,6 +1,6 @@
 export async function handle({ event, resolve }) {
 	try {
-		const endpoint = import.meta.env.VITE_API_BASE_URL + '/status';
+		const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/auth/status';
 		const response = await event.fetch(endpoint, {
 			method: 'GET',
 			credentials: 'include'

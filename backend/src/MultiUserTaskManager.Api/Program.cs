@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
 using MultiUserTaskManager.Api.Entities;
@@ -47,37 +45,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapIdentityApi<User>();
-
-app.MapPost(
-        "/logout",
-        async (SignInManager<User> signInManager) =>
-        {
-            await signInManager.SignOutAsync();
-            return Results.Ok();
-        }
-    )
-    .RequireAuthorization();
-
-// return user information based on cookie
-app.MapGet(
-        "/status",
-        (ClaimsPrincipal user) =>
-        {
-            var email = user.FindFirstValue(ClaimTypes.Email);
-            var firstname = user.FindFirstValue(ClaimTypes.GivenName);
-            var lastname = user.FindFirstValue(ClaimTypes.Surname);
-            return Results.Json(
-                new
-                {
-                    email,
-                    firstname,
-                    lastname
-                }
-            );
-        }
-    )
-    .RequireAuthorization();
-
 app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 app.UseAuthorization();

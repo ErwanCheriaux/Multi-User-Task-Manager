@@ -27,7 +27,7 @@
 
 	const handleLogout = async () => {
 		try {
-			const endpoint = import.meta.env.VITE_API_BASE_URL + '/logout';
+			const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/auth/logout';
 			const response = await fetch(endpoint, {
 				method: 'POST',
 				credentials: 'include'
