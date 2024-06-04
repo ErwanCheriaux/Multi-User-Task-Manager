@@ -6,6 +6,8 @@
 		endDate: Date;
 		isCompleted: boolean;
 	};
+
+	$: formatedEnddate = new Date(duty.endDate).toISOString().split('T')[0];
 </script>
 
 <form method="POST" action="?/save">
@@ -23,7 +25,7 @@
 
 	<label>
 		End Date:
-		<input type="date" name="endDate" value={duty.endDate} required />
+		<input type="date" name="endDate" value={formatedEnddate} required />
 	</label>
 
 	<label>
