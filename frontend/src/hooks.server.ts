@@ -6,12 +6,14 @@ export async function handle({ event, resolve }) {
 			credentials: 'include'
 		});
 
-		if (!response.ok) {
-			throw new Error(response.statusText);
+		if (response.ok) {
+			const { email, firstname, lastname } = await response.json();
+			event.locals.session = { email, firstname, lastname };
+		} else {
+			event.locals.session = undefined;
+			// Throw error if not Unauthorize
+			if (response.status !== 401) throw new Error(response.statusText);
 		}
-
-		const { email, firstname, lastname } = await response.json();
-		event.locals.session = { email, firstname, lastname };
 	} catch (error) {
 		console.error('Get status failed!', error);
 	}

@@ -20,8 +20,8 @@ const getDuties = async (fetch: any) => {
 };
 
 export const load = (async ({ fetch, locals }) => {
-	// redirect to login page if not logged in
-	if (!locals.session.email) throw redirect(302, '/auth/login');
+	// redirect to login page if no session
+	if (!locals.session) throw redirect(302, '/auth/login');
 
 	const firstname = locals.session.firstname;
 	const lastname = locals.session.lastname;
@@ -36,7 +36,7 @@ export const actions = {
 	saveDutyForm: async ({ request, locals }) => {
 		const data = await request.formData();
 		const id = data.get('id');
-		const email = locals.session.email;
+		const email = locals.session?.email;
 		const label = data.get('label');
 		const category = data.get('category');
 		const endDate = data.get('endDate');

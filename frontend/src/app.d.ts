@@ -7,7 +7,7 @@ declare global {
 				email: string;
 				firstname: string;
 				lastname: string;
-			};
+			} | undefined;
 		}
 		// interface Error {}
 		// interface PageData {}
