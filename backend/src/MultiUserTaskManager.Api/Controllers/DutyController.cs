@@ -37,8 +37,9 @@ public class DutyController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DutyDto>> CreateDuty(DutyModel model)
     {
-        // Find the existing user based on user id
-        var user = await _dataContext.Users.FindAsync(model.UserId);
+        // Find the existing user based on user email
+        var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+
         if (user == null)
             return NotFound("User not found");
 
@@ -88,7 +89,7 @@ public class DutyController : ControllerBase
 }
 
 public record DutyModel(
-    [Required] string UserId,
+    [Required] string Email,
     [Required] string Label,
     [Required] string Category,
     [Required] DateTime EndDate,
