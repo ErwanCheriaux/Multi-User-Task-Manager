@@ -4,8 +4,16 @@
 	export let form: ActionData;
 </script>
 
-<h1>Login page</h1>
+<h1>Register page</h1>
 <form method="POST">
+	<label>
+		First Name
+		<input name="firstname" type="text" />
+	</label>
+	<label>
+		Last Name
+		<input name="lastname" type="text" />
+	</label>
 	<label>
 		Email
 		<input name="email" type="email" />
@@ -14,15 +22,11 @@
 		Password
 		<input name="password" type="password" />
 	</label>
-	<label>
-		Remember Me
-		<input name="remember" type="checkbox" />
-	</label>
-	<button>Log in</button>
+	<button>Register</button>
 </form>
 
 {#if form?.success === false}
-	<p>Wrong credentials!</p>
+	<p>Something went wrong...</p>
 {/if}
 
 <style>
