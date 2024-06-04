@@ -21,6 +21,8 @@
 	<button>Log in</button>
 </form>
 
+<a href="/auth/register">Register</a>
+
 {#if form?.success === false}
 	<p>Wrong credentials!</p>
 {/if}

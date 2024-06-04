@@ -25,6 +25,8 @@
 	<button>Register</button>
 </form>
 
+<a href="/auth/login">Login</a>
+
 {#if form?.success === false}
 	<p>Something went wrong...</p>
 {/if}
