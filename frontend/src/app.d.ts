@@ -2,8 +2,14 @@
 // for information about these interfaces
 declare global {
 	namespace App {
+		interface Locals {
+			session: {
+				email: string;
+				firstname: string;
+				lastname: string;
+			};
+		}
 		// interface Error {}
-		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
