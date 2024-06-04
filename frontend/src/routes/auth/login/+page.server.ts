@@ -34,11 +34,10 @@ export const actions = {
 				const opts: CookieSerializeOptions = {
 					expires: parsedCookie.expires ? new Date(parsedCookie.expires) : undefined,
 					sameSite: parsedCookie.samesite as 'lax' | 'strict' | 'none' | undefined
-				  };
-				  
+				};
+
 				cookies.set(name, value, { ...opts, path: path });
 			}
-            
 		} catch (error) {
 			console.error('Login failed!', error);
 			return { success: false };

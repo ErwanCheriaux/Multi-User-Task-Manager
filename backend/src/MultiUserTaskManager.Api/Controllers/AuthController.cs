@@ -21,7 +21,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
         // Create a new user with the provided details
-        var user = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+        var user = new User
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            FirstName = model.FirstName,
+            LastName = model.LastName
+        };
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)

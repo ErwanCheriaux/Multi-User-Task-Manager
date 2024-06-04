@@ -13,9 +13,9 @@ export const actions = {
 			const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/Auth/register';
 			const response = await fetch(endpoint, {
 				method: 'POST',
-				headers: {'Content-Type': 'application/json'},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ email, password, firstname, lastname }),
-                credentials: 'include'
+				credentials: 'include'
 			});
 
 			if (!response.ok) {
