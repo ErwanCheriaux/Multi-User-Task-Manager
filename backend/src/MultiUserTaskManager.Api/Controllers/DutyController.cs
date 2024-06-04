@@ -93,7 +93,7 @@ public class DutyController : ControllerBase
         return Ok(duty.AsDto());
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteDuty(int id)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);

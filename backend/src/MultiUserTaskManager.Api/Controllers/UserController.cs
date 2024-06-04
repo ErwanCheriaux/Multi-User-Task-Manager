@@ -47,7 +47,7 @@ public class UserController : ControllerBase
         return Ok(dbUser.AsDto());
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(string id)
     {
         var user = await _dataContext.Users.FindAsync(id);
