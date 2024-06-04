@@ -33,10 +33,9 @@ export const load = (async ({ fetch, locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	saveDutyForm: async ({ request, locals }) => {
+	saveDutyForm: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const id = data.get('id');
-		const email = locals.session?.email;
 		const label = data.get('label');
 		const category = data.get('category');
 		const endDate = data.get('endDate');
@@ -55,7 +54,7 @@ export const actions = {
 			const response = await fetch(endpoint, {
 				method,
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, label, category, endDate, isCompleted }),
+				body: JSON.stringify({ label, category, endDate, isCompleted }),
 				credentials: 'include'
 			});
 

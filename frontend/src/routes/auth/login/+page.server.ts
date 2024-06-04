@@ -25,6 +25,7 @@ export const actions = {
 				return { success: false };
 			}
 
+			// attach cookie session
 			const setCookieHeader = response.headers.get('Set-Cookie') ?? '';
 			const parsedCookie = cookie.parse(setCookieHeader);
 			if (parsedCookie['.AspNetCore.Identity.Application']) {

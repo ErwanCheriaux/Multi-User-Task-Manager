@@ -8,6 +8,7 @@ using MultiUserTaskManager.Api.Entities;
 
 namespace MultiUserTaskManager.Api.Controller;
 
+[Authorize]
 [ApiController]
 [Route("api/[Controller]")]
 public class DutyController : ControllerBase
@@ -20,7 +21,6 @@ public class DutyController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<ActionResult<List<DutyDto>>> GetAllDuties()
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
@@ -35,7 +35,9 @@ public class DutyController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<List<DutyDto>>> GetDuty(int id)
     {
-        var duty = await _dataContext.Duties.FindAsync(id);
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
+
         if (duty == null)
             return NotFound("Duty not found.");
 
@@ -45,8 +47,10 @@ public class DutyController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DutyDto>> CreateDuty(DutyModel model)
     {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+
         // Find the existing user based on user email
-        var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+        var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == email);
 
         if (user == null)
             return NotFound("User not found");
@@ -69,24 +73,28 @@ public class DutyController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<DutyDto>> UpdateDuty(int id, Duty updatedDuty)
     {
-        var dbDuty = await _dataContext.Duties.FindAsync(id);
-        if (dbDuty == null)
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
+
+        if (duty == null)
             return NotFound("Duty not found.");
 
-        dbDuty.User = updatedDuty.User;
-        dbDuty.Label = updatedDuty.Label;
-        dbDuty.Category = updatedDuty.Category;
-        dbDuty.EndDate = updatedDuty.EndDate;
-        dbDuty.IsCompleted = updatedDuty.IsCompleted;
+        duty.User = updatedDuty.User;
+        duty.Label = updatedDuty.Label;
+        duty.Category = updatedDuty.Category;
+        duty.EndDate = updatedDuty.EndDate;
+        duty.IsCompleted = updatedDuty.IsCompleted;
 
         await _dataContext.SaveChangesAsync();
-        return Ok(dbDuty.AsDto());
+        return Ok(duty.AsDto());
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteDuty(int id)
     {
-        var duty = await _dataContext.Duties.FindAsync(id);
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
+
         if (duty == null)
             return NotFound("Duty not found.");
 
@@ -97,7 +105,6 @@ public class DutyController : ControllerBase
 }
 
 public record DutyModel(
-    [Required] string Email,
     [Required] string Label,
     [Required] string Category,
     [Required] DateTime EndDate,
