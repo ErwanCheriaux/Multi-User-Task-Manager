@@ -33,7 +33,7 @@ export const load = (async ({ fetch, locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	saveDutyForm: async ({ fetch, request }) => {
+	save: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const id = data.get('id');
 		const label = data.get('label');
@@ -64,6 +64,27 @@ export const actions = {
 			}
 		} catch (error) {
 			console.error('Save task failed!', error);
+			return { success: false };
+		}
+	},
+	delete: async ({ fetch, request }) => {
+		const data = await request.formData();
+		const id = data.get('id');
+
+		try {
+			const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/duty/' + id;
+			console.log('endpoint: ', endpoint);
+			const response = await fetch(endpoint, {
+				method: 'DELETE',
+				credentials: 'include'
+			});
+
+			if (!response.ok) {
+				console.error('Delete task failed!', response.statusText);
+				return { success: false };
+			}
+		} catch (error) {
+			console.error('Delete task failed!', error);
 			return { success: false };
 		}
 	}

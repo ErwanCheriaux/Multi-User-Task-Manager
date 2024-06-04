@@ -25,6 +25,7 @@
 	<p>Category: {duty.category}</p>
 	<p>End Date: {formattedEndDate}</p>
 	<p>Status: {duty.isCompleted ? 'Completed' : 'Pending'}</p>
+	<slot />
 </div>
 
 <style>

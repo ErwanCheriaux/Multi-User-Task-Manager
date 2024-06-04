@@ -8,7 +8,7 @@
 	};
 </script>
 
-<form method="POST" action="?/saveDutyForm">
+<form method="POST" action="?/save">
 	<label>
 		Label:
 		<input type="text" name="label" bind:value={duty.label} required />

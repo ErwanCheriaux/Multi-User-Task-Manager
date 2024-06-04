@@ -49,7 +49,13 @@
 </Modal>
 
 {#each data.duties as duty}
-	<DutyCard bind:duty></DutyCard>
+	<DutyCard bind:duty>
+		<form method="POST">
+			<input type="hidden" name="id" value={duty.id} />
+			<button>Edit</button>
+			<button formaction="?/delete">Remove</button>
+		</form>
+	</DutyCard>
 {:else}
 	<p>No task</p>
 {/each}
