@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import DutyCard from '$lib/components/DutyCard.svelte';
 	import DutyForm from '$lib/components/DutyForm.svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -18,6 +19,26 @@
 	};
 
 	let selectedDuty = emptyDuty;
+
+	const logout = async () => {
+		try {
+			const endpoint = import.meta.env.VITE_API_BASE_URL + '/logout';
+			const response = await fetch(endpoint, {
+				method: 'POST',
+				credentials: 'include'
+			});
+
+			if (!response.ok) {
+				console.error('Logout failed!', response.statusText);
+				return { success: false };
+			}
+
+			goto('auth/login');
+		} catch (error) {
+			console.error('Logout failed!', error);
+			return { success: false };
+		}
+	};
 </script>
 
 <h1 class="center">Welcome {user.firstname} {user.lastname}</h1>
@@ -33,7 +54,7 @@
 	<p>No task</p>
 {/each}
 
-<a class="logout" href="/">Logout</a>
+<button class="logout" on:click={logout}>Logout</button>
 
 <style>
 	.center {

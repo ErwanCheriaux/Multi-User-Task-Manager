@@ -25,7 +25,7 @@
 	<button>Register</button>
 </form>
 
-<a href="/auth/login">Login</a>
+<a class="login" href="/auth/login">Login</a>
 
 {#if form?.success === false}
 	<p>Something went wrong...</p>
@@ -35,5 +35,13 @@
 	form {
 		display: grid;
 		row-gap: 0.3em;
+	}
+	.login {
+		font-size: x-large;
+		margin-top: 10px;
+		margin-right: 20px;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 </style>

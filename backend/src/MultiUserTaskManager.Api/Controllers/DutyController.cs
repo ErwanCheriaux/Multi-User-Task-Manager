@@ -24,8 +24,8 @@ public class DutyController : ControllerBase
     public async Task<ActionResult<List<DutyDto>>> GetAllDuties()
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var duties = await _dataContext.Duties
-            .Where(duty => duty.User != null && duty.User.Email == email)
+        var duties = await _dataContext
+            .Duties.Where(duty => duty.User != null && duty.User.Email == email)
             .Select(duty => duty.AsDto())
             .ToListAsync();
 
@@ -36,7 +36,9 @@ public class DutyController : ControllerBase
     public async Task<ActionResult<List<DutyDto>>> GetDuty(int id)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
+        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d =>
+            d.Id == id && d.User != null && d.User.Email == email
+        );
 
         if (duty == null)
             return NotFound("Duty not found.");
@@ -74,7 +76,9 @@ public class DutyController : ControllerBase
     public async Task<ActionResult<DutyDto>> UpdateDuty(int id, Duty updatedDuty)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
+        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d =>
+            d.Id == id && d.User != null && d.User.Email == email
+        );
 
         if (duty == null)
             return NotFound("Duty not found.");
@@ -93,7 +97,9 @@ public class DutyController : ControllerBase
     public async Task<ActionResult> DeleteDuty(int id)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
+        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d =>
+            d.Id == id && d.User != null && d.User.Email == email
+        );
 
         if (duty == null)
             return NotFound("Duty not found.");

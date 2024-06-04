@@ -3,11 +3,13 @@
 declare global {
 	namespace App {
 		interface Locals {
-			session: {
-				email: string;
-				firstname: string;
-				lastname: string;
-			} | undefined;
+			session:
+				| {
+						email: string;
+						firstname: string;
+						lastname: string;
+				  }
+				| undefined;
 		}
 		// interface Error {}
 		// interface PageData {}

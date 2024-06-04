@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
 using MultiUserTaskManager.Api.Entities;
@@ -46,6 +47,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapIdentityApi<User>();
+
+app.MapPost(
+        "/logout",
+        async (SignInManager<User> signInManager) =>
+        {
+            await signInManager.SignOutAsync();
+            return Results.Ok();
+        }
+    )
+    .RequireAuthorization();
 
 // return user information based on cookie
 app.MapGet(
