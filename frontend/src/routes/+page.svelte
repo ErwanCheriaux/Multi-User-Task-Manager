@@ -20,7 +20,12 @@
 
 	let selectedDuty = emptyDuty;
 
-	const logout = async () => {
+	const handleEditDuty = (duty?: any) => {
+		selectedDuty = duty || emptyDuty;
+		showDutyFormModal = true;
+	};
+
+	const handleLogout = async () => {
 		try {
 			const endpoint = import.meta.env.VITE_API_BASE_URL + '/logout';
 			const response = await fetch(endpoint, {
@@ -43,16 +48,16 @@
 
 <h1 class="center">Welcome {user.firstname} {user.lastname}</h1>
 
-<button on:click={() => (showDutyFormModal = true)}>Add Task</button>
+<button on:click={() => handleEditDuty()}>Add Task</button>
 <Modal bind:showModal={showDutyFormModal}>
-	<DutyForm bind:duty={selectedDuty}></DutyForm>
+	<DutyForm duty={selectedDuty}></DutyForm>
 </Modal>
 
 {#each data.duties as duty}
-	<DutyCard bind:duty>
+	<DutyCard {duty}>
 		<form method="POST">
 			<input type="hidden" name="id" value={duty.id} />
-			<button>Edit</button>
+			<button on:click|preventDefault={() => handleEditDuty(duty)}>Edit</button>
 			<button formaction="?/delete">Remove</button>
 		</form>
 	</DutyCard>
@@ -60,7 +65,7 @@
 	<p>No task</p>
 {/each}
 
-<button class="logout" on:click={logout}>Logout</button>
+<button class="logout" on:click={handleLogout}>Logout</button>
 
 <style>
 	.center {

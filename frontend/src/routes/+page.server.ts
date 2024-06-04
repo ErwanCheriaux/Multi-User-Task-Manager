@@ -46,7 +46,7 @@ export const actions = {
 			let method = 'POST';
 
 			// save existing duty
-			if (id !== null) {
+			if (id) {
 				endpoint += '/' + id;
 				method = 'PUT';
 			}
@@ -73,7 +73,6 @@ export const actions = {
 
 		try {
 			const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/duty/' + id;
-			console.log('endpoint: ', endpoint);
 			const response = await fetch(endpoint, {
 				method: 'DELETE',
 				credentials: 'include'
