@@ -17,8 +17,7 @@
 		day: 'numeric'
 	};
 
-	const categoryName =
-		categories.find((category) => category.id == duty.categoryId)?.name ?? 'None';
+	$: categoryName = categories.find((category) => category.id == duty.categoryId)?.name ?? 'None';
 	const formattedEndDate = new Date(duty.endDate).toLocaleDateString('en-US', options);
 </script>
 

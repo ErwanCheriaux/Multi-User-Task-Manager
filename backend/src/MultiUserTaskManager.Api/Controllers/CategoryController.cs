@@ -77,12 +77,19 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult> DeleteCategory(int id)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var category = await _dataContext.Categories.FirstOrDefaultAsync(d =>
-            d.Id == id && d.User != null && d.User.Email == email
-        );
+        var category = await _dataContext.Categories
+            .FirstOrDefaultAsync(c => c.Id == id && c.User != null && c.User.Email == email);
 
         if (category == null)
             return NotFound("Category not found.");
+
+        // Retrieve all duties assigned to this category
+        var dutiesToUpdate = await _dataContext.Duties
+            .Where(d => d.Category != null && d.Category.Id == id && d.User != null && d.User.Email == email)
+            .ToListAsync();
+
+        // Update all tasks assigned to this category
+        foreach (var duty in dutiesToUpdate) duty.Category = null;
 
         _dataContext.Categories.Remove(category);
         await _dataContext.SaveChangesAsync();
