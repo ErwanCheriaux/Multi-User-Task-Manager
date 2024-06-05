@@ -2,24 +2,24 @@
 
 ## Quick start
 
-Start SQL server database and .NET server with Docker compose, required docker installed.
-SQL server run at http://localhost:1433
-.NET server listen at http://localhost:5280
+Start SQL server database and .NET server with Docker compose, required **docker** installed.  
+SQL server run at http://localhost:1433  
+.NET server listen at http://localhost:5280  
 
-```
+```powershell
 docker compose up -d --build
 ```
 
 (optional)
-Insert common categories into database, required sqlcmd installed.
+Insert common categories into database, required **sqlcmd** installed.
 
-```
+```powershell
 sqlcmd -S localhost -d MultiUserTaskManagerDb -U sa -P '<YourStrong@Passw0rd>' -i .\scripts\InsertCommonCategories.sql
 ```
 
-Start client running at http://localhost:4173, required npm installed.
+Start client running at http://localhost:4173, required **npm** installed.
 
-```
+```powershell
 cd frontend
 npm install
 npm run build
