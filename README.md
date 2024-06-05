@@ -17,12 +17,13 @@ Insert common categories into database, required sqlcmd installed.
 sqlcmd -S localhost -d MultiUserTaskManagerDb -U sa -P '<YourStrong@Passw0rd>' -i .\scripts\InsertCommonCategories.sql
 ```
 
-Start client running at http://localhost:5173, required npm installed.
+Start client running at http://localhost:4173, required npm installed.
 
 ```
 cd frontend
 npm install
-npm run dev -- --open
+npm run build
+npm run preview -- --open
 ```
 
 ## Code formating
