@@ -12,6 +12,9 @@ services:
     build:
       context: backend
       target: final
+    environment:
+      - "SqlServerSettings__Server=database"
+      - "SqlServerSettings__Password=<YourStrong@Passw0rd>"
     depends_on:
       - database
     networks:
