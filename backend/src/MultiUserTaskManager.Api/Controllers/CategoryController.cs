@@ -25,7 +25,8 @@ public class CategoryController : ControllerBase
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
         var categories = await _dataContext
-            .Categories.Where(category => category.User == null || category.User.Email == email)
+            .Categories.Include(category => category.User)
+            .Where(category => category.User == null || category.User.Email == email)
             .Select(category => category.AsDto())
             .ToListAsync();
 
@@ -56,17 +57,17 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, Category updatedCategory)
+    public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, CategoryModel updatedModel)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var category = await _dataContext.Categories.FirstOrDefaultAsync(d =>
+        var category = await _dataContext.Categories.Include(category => category.User).FirstOrDefaultAsync(d =>
             d.Id == id && d.User != null && d.User.Email == email
         );
 
         if (category == null)
             return NotFound("Category not found.");
 
-        category.Name = updatedCategory.Name;
+        category.Name = updatedModel.Name;
 
         await _dataContext.SaveChangesAsync();
         return Ok(category.AsDto());
