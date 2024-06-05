@@ -45,7 +45,8 @@ public class DutyController : ControllerBase
 
         // Find the existing category based on category id or assign no category
         var category = await _dataContext.Categories.FirstOrDefaultAsync(d =>
-            d.Id == model.CategoryId && (d.User == null || (d.User != null && d.User.Email == email))
+            d.Id == model.CategoryId
+            && (d.User == null || (d.User != null && d.User.Email == email))
         );
 
         // Create a new Duty entity with the existing user
@@ -76,7 +77,8 @@ public class DutyController : ControllerBase
 
         // Find the existing category based on category id or assign no category
         var category = await _dataContext.Categories.FirstOrDefaultAsync(d =>
-            d.Id == updatedModel.CategoryId && (d.User == null || (d.User != null && d.User.Email == email))
+            d.Id == updatedModel.CategoryId
+            && (d.User == null || (d.User != null && d.User.Email == email))
         );
 
         duty.Label = updatedModel.Label;

@@ -45,11 +45,7 @@ public class CategoryController : ControllerBase
             return NotFound("User not found");
 
         // Create a new Category entity with the existing user
-        var category = new Category
-        {
-            Name = model.Name,
-            User = user
-        };
+        var category = new Category { Name = model.Name, User = user };
 
         _dataContext.Categories.Add(category);
         await _dataContext.SaveChangesAsync();
@@ -60,9 +56,9 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, CategoryModel updatedModel)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var category = await _dataContext.Categories.Include(category => category.User).FirstOrDefaultAsync(d =>
-            d.Id == id && d.User != null && d.User.Email == email
-        );
+        var category = await _dataContext
+            .Categories.Include(category => category.User)
+            .FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
 
         if (category == null)
             return NotFound("Category not found.");
@@ -77,19 +73,23 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult> DeleteCategory(int id)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var category = await _dataContext.Categories
-            .FirstOrDefaultAsync(c => c.Id == id && c.User != null && c.User.Email == email);
+        var category = await _dataContext.Categories.FirstOrDefaultAsync(c =>
+            c.Id == id && c.User != null && c.User.Email == email
+        );
 
         if (category == null)
             return NotFound("Category not found.");
 
         // Retrieve all duties assigned to this category
-        var dutiesToUpdate = await _dataContext.Duties
-            .Where(d => d.Category != null && d.Category.Id == id && d.User != null && d.User.Email == email)
+        var dutiesToUpdate = await _dataContext
+            .Duties.Where(d =>
+                d.Category != null && d.Category.Id == id && d.User != null && d.User.Email == email
+            )
             .ToListAsync();
 
         // Update all tasks assigned to this category
-        foreach (var duty in dutiesToUpdate) duty.Category = null;
+        foreach (var duty in dutiesToUpdate)
+            duty.Category = null;
 
         _dataContext.Categories.Remove(category);
         await _dataContext.SaveChangesAsync();
@@ -97,6 +97,4 @@ public class CategoryController : ControllerBase
     }
 }
 
-public record CategoryModel(
-    [Required] string Name
-);
+public record CategoryModel([Required] string Name);

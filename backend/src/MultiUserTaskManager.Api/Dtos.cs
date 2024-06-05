@@ -17,8 +17,4 @@ public record DutyDto(
     [Required] bool IsCompleted
 );
 
-public record CategoryDto(
-    [Required] int Id,
-    [Required] string Name,
-    [Required] bool IsReadOnly
-);
+public record CategoryDto([Required] int Id, [Required] string Name, [Required] bool IsReadOnly);

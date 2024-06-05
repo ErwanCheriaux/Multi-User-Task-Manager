@@ -54,11 +54,19 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpGet("status")]
-    public ActionResult Status() {
+    public ActionResult Status()
+    {
         var email = User.FindFirstValue(ClaimTypes.Email);
         var firstname = User.FindFirstValue(ClaimTypes.GivenName);
         var lastname = User.FindFirstValue(ClaimTypes.Surname);
-        return Ok(new {email, firstname, lastname});
+        return Ok(
+            new
+            {
+                email,
+                firstname,
+                lastname
+            }
+        );
     }
 }
 

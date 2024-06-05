@@ -35,7 +35,4 @@ public class UserController : ControllerBase
     }
 }
 
-public record UserModel(
-    [Required] string FirstName,
-    [Required] string LastName
-);
+public record UserModel([Required] string FirstName, [Required] string LastName);
