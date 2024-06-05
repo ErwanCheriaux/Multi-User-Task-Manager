@@ -1,5 +1,30 @@
 # Multi-User Task Manager
 
+## Quick start
+
+Start SQL server database and .NET server with Docker compose, required docker installed.
+SQL server run at http://localhost:1433
+.NET server listen at http://localhost:5280
+
+```
+docker compose up -d --build
+```
+
+(optional)
+Insert common categories into database, requiered sqlcmd installed.
+
+```
+sqlcmd -S localhost -d MultiUserTaskManagerDb -U sa -P '<YourStrong@Passw0rd>' -i .\scripts\InsertCommonCategories.sql
+```
+
+Start client running at http://localhost:5173, requiered npm installed.
+
+```
+cd frontend
+npm install
+npm run dev -- --open
+```
+
 ## Statement
 
 Un utilisateur possède : mail/identifiant, nom, prénom, password
