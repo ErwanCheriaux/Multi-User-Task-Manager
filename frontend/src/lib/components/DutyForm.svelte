@@ -7,6 +7,8 @@
 		isCompleted: boolean;
 	};
 
+	export let categories: { id: number; name: string }[];
+
 	$: formatedEnddate = new Date(duty.endDate).toISOString().split('T')[0];
 </script>
 
@@ -19,8 +21,12 @@
 	</label>
 
 	<label>
-		CategoryId:
-		<input type="number" name="categoryId" value={duty.categoryId} />
+		Category:
+		<select name="categoryId" value={duty.categoryId}>
+			{#each categories as category}
+				<option value={category.id}>{category.name}</option>
+			{/each}
+		</select>
 	</label>
 
 	<label>

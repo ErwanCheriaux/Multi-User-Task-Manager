@@ -51,7 +51,7 @@
 
 <button on:click={() => handleEditDuty()}>Add Task</button>
 <Modal bind:showModal={showDutyFormModal}>
-	<DutyForm duty={selectedDuty}></DutyForm>
+	<DutyForm duty={selectedDuty} {categories}></DutyForm>
 </Modal>
 
 {#each data.duties as duty}
