@@ -11,18 +11,34 @@ docker compose up -d --build
 ```
 
 (optional)
-Insert common categories into database, requiered sqlcmd installed.
+Insert common categories into database, required sqlcmd installed.
 
 ```
 sqlcmd -S localhost -d MultiUserTaskManagerDb -U sa -P '<YourStrong@Passw0rd>' -i .\scripts\InsertCommonCategories.sql
 ```
 
-Start client running at http://localhost:5173, requiered npm installed.
+Start client running at http://localhost:5173, required npm installed.
 
 ```
 cd frontend
 npm install
 npm run dev -- --open
+```
+
+## Code formating
+
+Format backend code with CSharpier
+
+```
+cd backend
+dotnet csharpier .
+```
+
+Format frontend code with Prettier
+
+```
+cd frontend
+npm run format
 ```
 
 ## Statement
