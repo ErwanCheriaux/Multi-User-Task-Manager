@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MultiUserTaskManager.Api.Data;
-using MultiUserTaskManager.Api.Entities;
 
 namespace MultiUserTaskManager.Api.Controller;
 
@@ -18,18 +19,23 @@ public class UserController : ControllerBase
         _dataContext = dataContext;
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<UserDto>> UpdateUser(string id, User updatedUser)
+    [HttpPut]
+    public async Task<ActionResult<UserDto>> UpdateUser(UserModel updatedModel)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var user = await _dataContext.Users.FindAsync(id);
-        if (user == null || user.Email != email)
+        var user = await _dataContext.Users.FirstOrDefaultAsync(user => user.Email == email);
+        if (user == null)
             return NotFound("User not found.");
 
-        user.FirstName = updatedUser.FirstName;
-        user.LastName = updatedUser.LastName;
+        user.FirstName = updatedModel.FirstName;
+        user.LastName = updatedModel.LastName;
 
         await _dataContext.SaveChangesAsync();
         return Ok(user.AsDto());
     }
 }
+
+public record UserModel(
+    [Required] string FirstName,
+    [Required] string LastName
+);
