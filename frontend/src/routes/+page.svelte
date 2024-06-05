@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import CategoryManagment from '$lib/components/CategoryManagment.svelte';
 	import DutyCard from '$lib/components/DutyCard.svelte';
 	import DutyForm from '$lib/components/DutyForm.svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -11,6 +12,8 @@
 	$: categories = data.categories;
 
 	let showDutyFormModal = false;
+	let showCategoryManagmentModal = false;
+
 	let emptyDuty = {
 		id: null,
 		label: 'my label',
@@ -24,6 +27,10 @@
 	const handleEditDuty = (duty?: any) => {
 		selectedDuty = duty || emptyDuty;
 		showDutyFormModal = true;
+	};
+
+	const handleEditCategory = () => {
+		showCategoryManagmentModal = true;
 	};
 
 	const handleLogout = async () => {
@@ -52,6 +59,11 @@
 <button on:click={() => handleEditDuty()}>Add Task</button>
 <Modal bind:showModal={showDutyFormModal}>
 	<DutyForm duty={selectedDuty} {categories}></DutyForm>
+</Modal>
+
+<button on:click={() => handleEditCategory()}>Edit category</button>
+<Modal bind:showModal={showCategoryManagmentModal}>
+	<CategoryManagment bind:categories></CategoryManagment>
 </Modal>
 
 {#each data.duties as duty}
