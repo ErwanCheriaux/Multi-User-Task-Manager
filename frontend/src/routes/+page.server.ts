@@ -58,7 +58,7 @@ export const actions = {
 		const data = await request.formData();
 		const id = data.get('id');
 		const label = data.get('label');
-		const categoryId = data.get('categoryId');
+		const categoryId = data.get('categoryId') || null;
 		const endDate = data.get('endDate');
 		const isCompleted = data.has('isCompleted');
 

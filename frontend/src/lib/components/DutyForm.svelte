@@ -22,7 +22,8 @@
 
 	<label>
 		Category:
-		<select name="categoryId" value={duty.categoryId}>
+		<select name="categoryId" value={duty.categoryId} placeholder="">
+			<option value={null}></option>
 			{#each categories as category}
 				<option value={category.id}>{category.name}</option>
 			{/each}

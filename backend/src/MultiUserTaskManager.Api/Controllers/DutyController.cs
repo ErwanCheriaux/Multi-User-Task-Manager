@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -68,9 +69,9 @@ public class DutyController : ControllerBase
     public async Task<ActionResult<DutyDto>> UpdateDuty(int id, DutyModel updatedModel)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d =>
-            d.Id == id && d.User != null && d.User.Email == email
-        );
+        var duty = await _dataContext
+            .Duties.Include(duty => duty.Category)
+            .FirstOrDefaultAsync(d => d.Id == id && d.User != null && d.User.Email == email);
 
         if (duty == null)
             return NotFound("Duty not found.");
@@ -109,7 +110,7 @@ public class DutyController : ControllerBase
 
 public record DutyModel(
     [Required] string Label,
-    [Required] int CategoryId,
+    [Optional] int? CategoryId,
     [Required] DateTime EndDate,
     [Required] bool IsCompleted
 );

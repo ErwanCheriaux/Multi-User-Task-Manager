@@ -16,7 +16,7 @@
 
 	let emptyDuty = {
 		id: null,
-		label: 'my label',
+		label: 'My new task',
 		categoryId: null,
 		endDate: new Date(),
 		isCompleted: false
