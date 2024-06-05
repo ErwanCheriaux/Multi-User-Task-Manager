@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getDuties = async (fetch: any) => {
 	try {
 		const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/duty';
@@ -19,6 +20,7 @@ const getDuties = async (fetch: any) => {
 	}
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getCategories = async (fetch: any) => {
 	try {
 		const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/category';

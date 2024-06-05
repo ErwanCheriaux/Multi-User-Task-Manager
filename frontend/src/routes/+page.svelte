@@ -24,6 +24,7 @@
 
 	let selectedDuty = emptyDuty;
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleEditDuty = (duty?: any) => {
 		selectedDuty = duty || emptyDuty;
 		showDutyFormModal = true;

@@ -39,7 +39,6 @@
 	}
 
 	/* Style for the form elements */
-	form input[type='text'],
 	form input[type='password'],
 	form input[type='email'],
 	form input[type='submit'] {
@@ -69,7 +68,6 @@
 	}
 
 	/* Focus styles for form elements */
-	form input[type='text']:focus,
 	form input[type='password']:focus,
 	form input[type='email']:focus {
 		border-color: #66afe9;
