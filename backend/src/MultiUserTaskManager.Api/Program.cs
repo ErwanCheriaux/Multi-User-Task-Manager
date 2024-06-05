@@ -7,16 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         "AllowOrigin",
         builder =>
-            builder
-                .WithOrigins("http://localhost:5173")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
+            builder.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
     );
 });
 
