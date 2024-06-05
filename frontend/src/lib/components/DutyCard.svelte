@@ -3,10 +3,12 @@
 	export let duty: {
 		id: number;
 		label: string;
-		category: string;
+		categoryId: number | null;
 		endDate: Date;
 		isCompleted: boolean;
 	};
+
+	export let categories: { id: number; name: string }[];
 
 	// Format the date for display
 	const options: Intl.DateTimeFormatOptions = {
@@ -15,12 +17,14 @@
 		day: 'numeric'
 	};
 
+	const categoryName =
+		categories.find((category) => category.id == duty.categoryId)?.name ?? 'None';
 	const formattedEndDate = new Date(duty.endDate).toLocaleDateString('en-US', options);
 </script>
 
 <div class="card">
 	<h2 class={duty.isCompleted ? 'completed' : ''}>{duty.label}</h2>
-	<p>Category: {duty.category}</p>
+	<p>Category: {categoryName}</p>
 	<p>End Date: {formattedEndDate}</p>
 	<p>Status: {duty.isCompleted ? 'Completed' : 'Pending'}</p>
 	<slot />

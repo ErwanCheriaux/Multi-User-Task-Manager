@@ -10,4 +10,5 @@ public class DataContext : IdentityDbContext<User>
         : base(options) { }
 
     public DbSet<Duty> Duties { get; set; }
+    public DbSet<Category> Categories { get; set; }
 }

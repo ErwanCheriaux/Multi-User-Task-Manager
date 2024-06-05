@@ -8,12 +8,13 @@
 	export let data: PageData;
 
 	$: user = data.user;
+	$: categories = data.categories;
 
 	let showDutyFormModal = false;
 	let emptyDuty = {
 		id: null,
 		label: 'my label',
-		category: 'my category',
+		categoryId: null,
 		endDate: new Date(),
 		isCompleted: false
 	};
@@ -54,7 +55,7 @@
 </Modal>
 
 {#each data.duties as duty}
-	<DutyCard {duty}>
+	<DutyCard {duty} {categories}>
 		<form method="POST">
 			<input type="hidden" name="id" value={duty.id} />
 			<button on:click|preventDefault={() => handleEditDuty(duty)}>Edit</button>

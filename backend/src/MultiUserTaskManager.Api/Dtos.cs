@@ -12,7 +12,13 @@ public record UserDto(
 public record DutyDto(
     [Required] int Id,
     [Required] string Label,
-    [Required] string Category,
+    [Required] int? CategoryId,
     [Required] DateTime EndDate,
     [Required] bool IsCompleted
+);
+
+public record CategoryDto(
+    [Required] int Id,
+    [Required] string Name,
+    [Required] bool IsReadOnly
 );

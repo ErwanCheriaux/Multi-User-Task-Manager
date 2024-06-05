@@ -25,25 +25,12 @@ public class DutyController : ControllerBase
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
         var duties = await _dataContext
-            .Duties.Where(duty => duty.User != null && duty.User.Email == email)
+            .Duties.Include(duty => duty.Category)
+            .Where(duty => duty.User != null && duty.User.Email == email)
             .Select(duty => duty.AsDto())
             .ToListAsync();
 
         return Ok(duties);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<List<DutyDto>>> GetDuty(int id)
-    {
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        var duty = await _dataContext.Duties.FirstOrDefaultAsync(d =>
-            d.Id == id && d.User != null && d.User.Email == email
-        );
-
-        if (duty == null)
-            return NotFound("Duty not found.");
-
-        return Ok(duty.AsDto());
     }
 
     [HttpPost]
@@ -53,18 +40,22 @@ public class DutyController : ControllerBase
 
         // Find the existing user based on user email
         var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-
         if (user == null)
             return NotFound("User not found");
+
+        // Find the existing category based on category id or assign no category
+        var category = await _dataContext.Categories.FirstOrDefaultAsync(d =>
+            d.Id == model.CategoryId && (d.User == null || (d.User != null && d.User.Email == email))
+        );
 
         // Create a new Duty entity with the existing user
         var duty = new Duty
         {
+            User = user,
             Label = model.Label,
-            Category = model.Category,
+            Category = category,
             EndDate = model.EndDate,
-            IsCompleted = model.IsCompleted,
-            User = user
+            IsCompleted = model.IsCompleted
         };
 
         _dataContext.Duties.Add(duty);
@@ -73,7 +64,7 @@ public class DutyController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<DutyDto>> UpdateDuty(int id, Duty updatedDuty)
+    public async Task<ActionResult<DutyDto>> UpdateDuty(int id, DutyModel updatedModel)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
         var duty = await _dataContext.Duties.FirstOrDefaultAsync(d =>
@@ -83,11 +74,15 @@ public class DutyController : ControllerBase
         if (duty == null)
             return NotFound("Duty not found.");
 
-        duty.User = updatedDuty.User;
-        duty.Label = updatedDuty.Label;
-        duty.Category = updatedDuty.Category;
-        duty.EndDate = updatedDuty.EndDate;
-        duty.IsCompleted = updatedDuty.IsCompleted;
+        // Find the existing category based on category id or assign no category
+        var category = await _dataContext.Categories.FirstOrDefaultAsync(d =>
+            d.Id == updatedModel.CategoryId && (d.User == null || (d.User != null && d.User.Email == email))
+        );
+
+        duty.Label = updatedModel.Label;
+        duty.Category = category;
+        duty.EndDate = updatedModel.EndDate;
+        duty.IsCompleted = updatedModel.IsCompleted;
 
         await _dataContext.SaveChangesAsync();
         return Ok(duty.AsDto());
@@ -112,7 +107,7 @@ public class DutyController : ControllerBase
 
 public record DutyModel(
     [Required] string Label,
-    [Required] string Category,
+    [Required] int CategoryId,
     [Required] DateTime EndDate,
     [Required] bool IsCompleted
 );

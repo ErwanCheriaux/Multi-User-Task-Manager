@@ -19,6 +19,24 @@ const getDuties = async (fetch: any) => {
 	}
 };
 
+const getCategories = async (fetch: any) => {
+	try {
+		const endpoint = import.meta.env.VITE_API_BASE_URL + '/api/category';
+		const response = await fetch(endpoint, {
+			method: 'GET',
+			credentials: 'include'
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		return await response.json();
+	} catch (error) {
+		console.error('Get category failed!', error);
+	}
+};
+
 export const load = (async ({ fetch, locals }) => {
 	// redirect to login page if no session
 	if (!locals.session) throw redirect(302, '/auth/login');
@@ -28,7 +46,8 @@ export const load = (async ({ fetch, locals }) => {
 
 	return {
 		user: { firstname, lastname },
-		duties: await getDuties(fetch)
+		duties: await getDuties(fetch),
+		categories: await getCategories(fetch)
 	};
 }) satisfies PageServerLoad;
 
@@ -37,7 +56,7 @@ export const actions = {
 		const data = await request.formData();
 		const id = data.get('id');
 		const label = data.get('label');
-		const category = data.get('category');
+		const categoryId = data.get('categoryId');
 		const endDate = data.get('endDate');
 		const isCompleted = data.has('isCompleted');
 
@@ -54,7 +73,7 @@ export const actions = {
 			const response = await fetch(endpoint, {
 				method,
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ label, category, endDate, isCompleted }),
+				body: JSON.stringify({ label, categoryId, endDate, isCompleted }),
 				credentials: 'include'
 			});
 

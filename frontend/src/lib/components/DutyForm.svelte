@@ -2,7 +2,7 @@
 	export let duty: {
 		id: number | null;
 		label: string;
-		category: string;
+		categoryId: number | null;
 		endDate: Date;
 		isCompleted: boolean;
 	};
@@ -19,8 +19,8 @@
 	</label>
 
 	<label>
-		Category:
-		<input type="text" name="category" value={duty.category} required />
+		CategoryId:
+		<input type="number" name="categoryId" value={duty.categoryId} />
 	</label>
 
 	<label>
